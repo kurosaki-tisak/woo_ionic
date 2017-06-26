@@ -21,9 +21,9 @@ export class HomePage {
     this.page = 2;
 
     this.WooCommerce = WC({
-      url: "http://www.lottary.mobi/wp",
-      consumerKey: "ck_33afa260b8217f50aab0ceab90e199499705ad80",
-      consumerSecret: "cs_1673b37a0435575f741b9c3f8911037c90cb8c9b"
+      url: "http://localhost/wordpress",
+      consumerKey: "ck_58fd92828155fe9b78bfb07566a547623e9ec151",
+      consumerSecret: "cs_1861ecfa42cf35cd9cc757032598c6d581498d07"
     });
 
     this.loadMoreProducts(null);
