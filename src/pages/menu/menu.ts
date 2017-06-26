@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { HomePage } from '../home/home';
 import * as WC from 'woocommerce-api';
+import {ProductsByCategoryPage} from '../products-by-category/products-by-category';
 
 @Component({
   selector: 'page-menu',
@@ -12,6 +13,7 @@ export class Menu {
   homePage: Component;
   WooCommerce: any;
   categories: any[];
+  @ViewChild('content') childNavCrtl: NavController;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.homePage = HomePage;
@@ -31,6 +33,17 @@ export class Menu {
 
       for(let i = 0; i < temp.length; i++) {
         if(temp[i].parent == 0) {
+
+          if(temp[i].slug == "accessories") {
+            temp[i].icon = "basket";
+          }
+          if(temp[i].slug == "hoodies") {
+            temp[i].icon = "logo-octocat";
+          }
+          if(temp[i].slug == "tshirts") {
+            temp[i].icon = "shirt";
+          }
+
           this.categories.push(temp[i]);
         }
       }
@@ -39,6 +52,10 @@ export class Menu {
       console.log(err);
     })
 
+  }
+
+  openCategoryPage(category) {
+    this.childNavCrtl.setRoot(ProductsByCategoryPage, { "category": category})
   }
 
   ionViewDidLoad() {
