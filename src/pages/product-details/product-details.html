@@ -1,18 +1,90 @@
-<!--
-  Generated template for the ProductDetailsPage page.
 
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
   <ion-navbar>
-    <ion-title>product-details</ion-title>
+    <ion-title> {{ product.title }} </ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
+
+<ion-card>
+  <ion-slides autoplay="3000" loop="true">
+    <ion-slide *ngFor="let image of product.images">
+      <img [src]="image.src"/>
+    </ion-slide>
+  </ion-slides>
+
+  <ion-card-content>
+    <ion-card-title>
+      {{ product.title }} &nbsp;
+      <ion-chip *ngFor="let cat of product.categories" style="margin-left: 5px;">
+        <ion-label color="danger">
+          {{ cat }}
+        </ion-label>
+      </ion-chip>
+    </ion-card-title>
+
+    <p [innerHTML]="product.description"></p>
+
+    <button ion-button icon-left block outline color="danger">
+      <ion-icon name="basket"></ion-icon> Add to cart
+    </button>
+
+  </ion-card-content>
+</ion-card>
+
+<ion-card *ngIf="product.attributes.length > 0">
+  <ion-card-content>
+    <ion-card-title>
+      Specification
+    </ion-card-title>
+
+    <ion-grid>
+      <ion-row *ngFor="let att of product.attribuites">
+        <ion-col col-4> {{ att.name }} </ion-col>
+        <ion-col col-8>
+          <span *ngFor="let option of att.options"> {{ option }} </span>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card-content>
+</ion-card>
+
+<ion-card *ngIf="review.length > 0">
+  <ion-card-content>
+    <ion-card-title>
+      Reviews
+    </ion-card-title>
+
+    <ion-grid>
+      <ion-row *ngFor="let review of reviews">
+        <ion-col col-4>
+          <b> {{ review.reviewer_name }} </b>
+          <span *ngIf="review.rating >= 1">
+            <ion-icon small name="start" style="color: #d4af37"></ion-icon>
+          </span>
+          <span *ngIf="review.rating >= 2">
+            <ion-icon small name="start" style="color: #d4af37"></ion-icon>
+          </span>
+          <span *ngIf="review.rating >= 3">
+            <ion-icon small name="start" style="color: #d4af37"></ion-icon>
+          </span>
+          <span *ngIf="review.rating >= 4">
+            <ion-icon small name="start" style="color: #d4af37"></ion-icon>
+          </span>
+          <span *ngIf="review.rating >= 5">
+            <ion-icon small name="start" style="color: #d4af37"></ion-icon>
+          </span>
+        </ion-col>
+        <ion-col col-8>
+          {{ review.review }}
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card-content>
+</ion-card>
 
 </ion-content>
