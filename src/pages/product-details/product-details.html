@@ -29,7 +29,7 @@
 
     <p [innerHTML]="product.description"></p>
 
-    <button ion-button icon-left block outline color="danger">
+    <button ion-button icon-left block outline color="danger" (click)="addToCart(product)">
       <ion-icon name="basket"></ion-icon> Add to cart
     </button>
 
@@ -53,7 +53,7 @@
   </ion-card-content>
 </ion-card>
 
-<ion-card *ngIf="review.length > 0">
+<ion-card *ngIf="reviews.length > 0">
   <ion-card-content>
     <ion-card-title>
       Reviews
@@ -62,21 +62,22 @@
     <ion-grid>
       <ion-row *ngFor="let review of reviews">
         <ion-col col-4>
-          <b> {{ review.reviewer_name }} </b>
+          <b> {{ review.reviewer_name }} </b> 
+          <br/>
           <span *ngIf="review.rating >= 1">
-            <ion-icon small name="start" style="color: #d4af37"></ion-icon>
+            <ion-icon small name="star" style="color: #d4af37"></ion-icon>
           </span>
           <span *ngIf="review.rating >= 2">
-            <ion-icon small name="start" style="color: #d4af37"></ion-icon>
+            <ion-icon small name="star" style="color: #d4af37"></ion-icon>
           </span>
           <span *ngIf="review.rating >= 3">
-            <ion-icon small name="start" style="color: #d4af37"></ion-icon>
+            <ion-icon small name="star" style="color: #d4af37"></ion-icon>
           </span>
           <span *ngIf="review.rating >= 4">
-            <ion-icon small name="start" style="color: #d4af37"></ion-icon>
+            <ion-icon small name="star" style="color: #d4af37"></ion-icon>
           </span>
           <span *ngIf="review.rating >= 5">
-            <ion-icon small name="start" style="color: #d4af37"></ion-icon>
+            <ion-icon small name="star" style="color: #d4af37"></ion-icon>
           </span>
         </ion-col>
         <ion-col col-8>
