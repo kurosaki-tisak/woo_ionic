@@ -121,12 +121,14 @@ export class SignupPage {
     }
 
     if (this.billing_shipping_same) {
-      this.newUser.shipping_address = this.newUser.shipping_address;
+      this.newUser.billing_address = this.newUser.shipping_address;
     }
 
     this.WooCommerce.postAsync('customers', customerData).then((data) => {
       
       let response = (JSON.parse(data.body));
+
+      console.log(response.customer);
 
       if(response.customer) {
         this.alertCtrl.create({
@@ -139,6 +141,7 @@ export class SignupPage {
             }
           }]
         })
+
       } else if(response.errors) {
         this.toastCtrl.create({
           message: response.errors[0].message,

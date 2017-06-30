@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+import { CheckoutPage } from '../checkout/checkout';
+import { LoginPage } from '../login/login';
 
 @Component({
   selector: 'page-cart',
@@ -62,6 +64,19 @@ export class CartPage {
 
   closeModal() {
     this.viewCtrl.dismiss();
+  }
+
+  checkout() {
+    this.storage.get("userLoginInfo").then( (data)=> {
+
+      if(data!= null){
+        this.navCtrl.push(CheckoutPage);
+
+      } else {
+        this.navCtrl.push(LoginPage, {next: CheckoutPage});
+      }
+
+    })
   }
 
 }
