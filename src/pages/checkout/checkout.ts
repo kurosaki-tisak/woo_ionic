@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+import { HomePage } from '../home/home';
 
 import * as WC from 'woocommerce-api';
 
@@ -17,7 +18,9 @@ export class CheckoutPage {
   billing_shipping_same: boolean;
   userInfo: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage,
+    public alertCrtl: AlertController) {
+
     this.newOrder = {};
     this.newOrder.billing_address = {};
     this.newOrder.shipping_address = {};
@@ -51,6 +54,10 @@ export class CheckoutPage {
     
   }
 
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad CheckoutPage');
+  }
+
   setBillingToShipping() {
     this.billing_shipping_same = !this.billing_shipping_same;
 
@@ -59,8 +66,71 @@ export class CheckoutPage {
     }
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad CheckoutPage');
+  placeOrder() {
+    
+    let orderItems: any[] = [];
+    let data: any = {};
+    let paymentData: any = {};
+
+    this.paymentMethods.forEach( (element, index)=> {
+        if(element.method_id == this.paymentMethod){
+          paymentData = element;
+        }
+    });
+
+    data = {
+      payment_details: {
+        method_id: paymentData.method_id,
+        method_title: paymentData.method_title,
+        paid: true
+      },
+
+      billing_address: this.newOrder.billing_address,
+      shipping_address: this.newOrder.shipping_address,
+      customer_id: this.userInfo.id || '',
+      line_items: orderItems
+    };
+
+    if(paymentData.method_id == "paypal") {
+      //TODO
+
+    } else {
+
+      this.storage.get('cart').then( (cart)=> {
+
+        cart.forEach( (element, index) => {
+          orderItems.push( {
+            product_id: element.product.id,
+            quantity: element.qty
+          }) 
+        });
+      });
+
+      data.line_items = orderItems;
+
+      let orderData: any = {};
+
+      orderData.order = data;
+
+      this.WooCommerce.postAsync("orders", orderData).then( (data) => {
+
+        let response = (JSON.parse(data.body).order);
+
+        this.alertCrtl.create( {
+          title: "Order Placed Successfully",
+          message: "Your order has been placed successfully. Your order number is " + response.order_number,
+          buttons: [{
+            text: "OK",
+            handler: () => {
+              this.navCtrl.setRoot(HomePage);
+            }
+          }]
+        }).present();
+
+      })
+
+    }
+
   }
 
 }
